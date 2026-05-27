@@ -1,7 +1,7 @@
 {
-  "name": "mobile",
+  "name": "@luxury/mobile",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "dependencies": {
     "expo": "~56.0.5",
     "expo-status-bar": "~56.0.4",
