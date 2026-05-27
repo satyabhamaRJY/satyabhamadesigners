@@ -1,0 +1,385 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS design system for luxury saree admin dashboard */
+
+:root {
+  --color-bg: #090807;
+  --color-surface: #141210;
+  --color-surface-hover: #1e1b18;
+  --color-border: #2c251e;
+  --color-gold: #d4af37;
+  --color-gold-muted: #af923d;
+  --color-gold-light: #f3e5ab;
+  --color-emerald: #097969;
+  --color-maroon: #800020;
+  --color-text-main: #f5f2eb;
+  --color-text-muted: #a39e93;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.1);
+  --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-text-main);
+}
+
+/* Sidebar Layout */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 10;
+}
+
+.sidebar-brand {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--color-gold);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.sidebar-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+  background-color: var(--color-surface-hover);
+  color: var(--color-gold);
+  border-left: 3px solid var(--color-gold);
+  padding-left: calc(1rem - 3px);
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem 3rem;
+  min-height: 100vh;
+}
+
+/* Luxury Metric Cards */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-heavy);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-gold-muted);
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric-value {
+  font-size: 1.75rem;
+  font-family: var(--font-serif);
+  font-weight: bold;
+  color: var(--color-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.metric-footer {
+  font-size: 0.75rem;
+  color: var(--color-gold);
+}
+
+/* Charts and Panels */
+.dashboard-panels {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-heavy);
+}
+
+.panel-title {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-gold-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Tables styling */
+.luxury-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-heavy);
+}
+
+.luxury-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background-color: var(--color-surface);
+}
+
+.luxury-table th {
+  background-color: #1a1715;
+  color: var(--color-gold);
+  font-family: var(--font-serif);
+  font-weight: 500;
+  padding: 1rem;
+  font-size: 0.9rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.luxury-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-text-main);
+}
+
+.luxury-table tr:hover td {
+  background-color: var(--color-surface-hover);
+}
+
+/* Forms & Fields */
+.luxury-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.luxury-label {
+  font-size: 0.85rem;
+  color: var(--color-gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.luxury-input, .luxury-select, .luxury-textarea {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-main);
+  padding: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.luxury-input:focus, .luxury-select:focus, .luxury-textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
+
+/* Premium Buttons */
+.luxury-btn {
+  background: linear-gradient(135deg, var(--color-border) 0%, #1e1a15 100%);
+  color: var(--color-gold-light);
+  border: 1px solid var(--color-gold-muted);
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+}
+
+.luxury-btn:hover {
+  background: linear-gradient(135deg, var(--color-gold-muted) 0%, var(--color-gold) 100%);
+  color: var(--color-bg);
+  border-color: var(--color-gold-light);
+  box-shadow: var(--shadow-gold);
+}
+
+.luxury-btn-danger {
+  background: linear-gradient(135deg, #420d09 0%, #600000 100%);
+  color: #ffcccc;
+  border: 1px solid #990000;
+}
+
+.luxury-btn-danger:hover {
+  background: #a30000;
+  color: white;
+  border-color: #ff8888;
+}
+
+.luxury-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge-paid {
+  background-color: rgba(9, 121, 105, 0.2);
+  color: #50c878;
+  border: 1px solid rgba(80, 200, 120, 0.3);
+}
+
+.badge-pending {
+  background-color: rgba(212, 175, 55, 0.1);
+  color: var(--color-gold);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.badge-shipped {
+  background-color: rgba(0, 150, 255, 0.1);
+  color: #33b5e5;
+  border: 1px solid rgba(51, 181, 229, 0.3);
+}
+
+.badge-delivered {
+  background-color: rgba(9, 121, 105, 0.3);
+  color: #8eff8e;
+  border: 1px solid #097969;
+}
+
+/* Modal Overlay */
+.luxury-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.luxury-modal {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-gold-muted);
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-heavy);
+  padding: 2rem;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: var(--color-gold);
+}
