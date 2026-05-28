@@ -27,7 +27,7 @@ export default function CheckoutPage() {
     if (cart.length === 0 && step !== 'success') {
       router.push('/');
     }
-  }, [cart, success, router]);
+  }, [cart, step, router]);
 
   const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
