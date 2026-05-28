@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PlayCircle, ShieldCheck, Sparkles, Droplets } from 'lucide-react';
 
 const API_BASE = 'http://localhost:5000/api';
