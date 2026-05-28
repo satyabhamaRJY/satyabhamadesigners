@@ -8,6 +8,18 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/admin',
+        destination: 'https://satyabhama-admin.vercel.app',
+      },
+      {
+        source: '/admin/:path*',
+        destination: 'https://satyabhama-admin.vercel.app/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
