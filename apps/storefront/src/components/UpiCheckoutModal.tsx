@@ -99,7 +99,7 @@ export function UpiCheckoutModal({ productName, price, onClose }: UpiCheckoutMod
               </div>
               <div>
                 <label className="block text-xs font-serif uppercase tracking-widest text-stone-400 mb-1">Phone Number</label>
-                <input required type="tel" value={shippingData.phone} onChange={(e) => setShippingData({...shippingData, phone: e.target.value})} className="w-full bg-stone-900 border border-stone-800 text-white px-4 py-3 rounded focus:outline-none focus:border-gold transition-colors" placeholder="+91 98765 43210" />
+                <input required type="tel" value={shippingData.phone} onChange={(e) => setShippingData({...shippingData, phone: e.target.value})} className="w-full bg-stone-900 border border-stone-800 text-white px-4 py-3 rounded focus:outline-none focus:border-gold transition-colors" placeholder="+91 63090 55764" />
               </div>
               <div>
                 <label className="block text-xs font-serif uppercase tracking-widest text-stone-400 mb-1">Street Address</label>
