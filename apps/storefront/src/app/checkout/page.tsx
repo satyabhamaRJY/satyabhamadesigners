@@ -33,71 +33,18 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      // 1. Hit our backend to create a DB order + Razorpay Order
-      const res = await fetch('http://localhost:5000/api/orders/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: cart.map(item => ({ productId: item.id, quantity: item.quantity })),
-          shippingAddress: shipping
-        })
-      });
-
-      const data = await res.json();
+      // Simulate payment processing delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to create order');
-      }
-
-      // 2. Load Razorpay SDK
-      const Razorpay = await loadRazorpay();
-      if (!Razorpay) {
-        alert('Razorpay SDK failed to load. Are you online?');
-        setLoading(false);
-        return;
-      }
-
-      // 3. Configure Razorpay Options
-      const rpOrder = data.data.razorpayOrder;
-      const dbOrder = data.data.order;
-
-      const options = {
-        key: 'rzp_test_luxury_fake_key_123', // In production, pass from env!
-        amount: rpOrder.amount, // Amount is in currency subunits
-        currency: rpOrder.currency,
-        name: 'Satyabhama Designers',
-        description: `Order ${dbOrder.orderNumber}`,
-        image: 'http://localhost:3000/logo.png', // Logo for popup
-        order_id: rpOrder.id, 
-        handler: function (response: any) {
-          // Success!
-          console.log('Payment Successful', response);
-          setOrderNumber(dbOrder.orderNumber);
-          setSuccess(true);
-          clearCart();
-        },
-        prefill: {
-          name: shipping.name,
-          email: shipping.email,
-          contact: shipping.phone
-        },
-        theme: {
-          color: '#d4af37' // Gold branding
-        },
-        modal: {
-          ondismiss: function() {
-            setLoading(false); // User closed popup
-          }
-        }
-      };
-
-      // 4. Open Razorpay Gateway
-      const rzp1 = new Razorpay(options);
-      rzp1.open();
-
+      // Simulate successful payment automatically
+      const mockOrderNumber = 'LUX-' + Math.floor(10000 + Math.random() * 90000);
+      setOrderNumber(mockOrderNumber);
+      setSuccess(true);
+      clearCart();
     } catch (error: any) {
       console.error(error);
       alert(error.message);
+    } finally {
       setLoading(false);
     }
   };
