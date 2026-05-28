@@ -39,7 +39,7 @@ export default function ProductDetailsPage() {
       const waUrl = `https://wa.me/916309055764?text=${encodeURIComponent(message)}`;
       window.open(waUrl, '_blank');
     } else {
-      console.log('Consultation Request:', { ...formData, product: product.name, sku: product.sku });
+      console.log('Consultation Request:', { ...formData, product: product.name });
     }
 
     setFormSubmitted(true);
