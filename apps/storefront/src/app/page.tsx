@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { ShoppingBag, ArrowRight, Star, Truck, Shield, Clock, X, CheckCircle, Volume2, VolumeX } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Star, Truck, Shield, Clock, X, CheckCircle, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Scene from '@/components/3d/Scene';
@@ -13,7 +13,9 @@ export default function Home() {
   const router = useRouter();
   const { addToCart } = useCart();
   const heroRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   // Guarantee sound stops when navigating away
   useEffect(() => {
@@ -63,10 +65,11 @@ export default function Home() {
         {/* Cinematic Video Background */}
         <div className="absolute inset-0 z-0">
           <video 
+            ref={videoRef}
             autoPlay 
-            loop 
             muted={isMuted} 
             playsInline 
+            onEnded={() => setIsPlaying(false)}
             className="w-full h-full object-cover object-[center_25%] md:object-[center_20%] opacity-70"
           >
             {/* Replace this URL with your actual saree video file in the /public folder (e.g. /hero-video.mp4) */}
@@ -75,14 +78,30 @@ export default function Home() {
           {/* Gradient Overlay to make text readable */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 pointer-events-none" />
           
-          {/* Sound Toggle Button */}
-          <button 
-            onClick={() => setIsMuted(!isMuted)}
-            className="absolute bottom-8 right-8 z-30 p-3 rounded-full bg-black/50 border border-stone-700 text-stone-300 hover:text-gold hover:border-gold transition-colors backdrop-blur-md"
-            title={isMuted ? "Unmute video" : "Mute video"}
-          >
-            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-          </button>
+          {/* Video Controls */}
+          <div className="absolute bottom-8 right-8 z-30 flex gap-3">
+            <button 
+              onClick={() => {
+                if (videoRef.current) {
+                  if (isPlaying) videoRef.current.pause();
+                  else videoRef.current.play();
+                  setIsPlaying(!isPlaying);
+                }
+              }}
+              className="p-3 rounded-full bg-black/50 border border-stone-700 text-stone-300 hover:text-gold hover:border-gold transition-colors backdrop-blur-md"
+              title={isPlaying ? "Pause video" : "Play video"}
+            >
+              {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+            </button>
+
+            <button 
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-3 rounded-full bg-black/50 border border-stone-700 text-stone-300 hover:text-gold hover:border-gold transition-colors backdrop-blur-md"
+              title={isMuted ? "Unmute video" : "Mute video"}
+            >
+              {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Foreground Text */}
@@ -208,7 +227,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-square md:aspect-[4/3] lg:aspect-square overflow-hidden bg-stone-900 border border-stone-800 rounded">
               <img 
-                src="https://images.unsplash.com/photo-1596455607563-ad6193f76b17?auto=format&fit=crop&w=1200&q=80" 
+                src="/loom.png" 
                 alt="Weaving loom"
                 className="w-full h-full object-cover"
               />

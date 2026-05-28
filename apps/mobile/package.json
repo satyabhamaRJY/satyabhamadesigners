@@ -4,9 +4,17 @@
   "main": "expo-router/entry",
   "dependencies": {
     "expo": "~56.0.5",
+    "expo-constants": "~56.0.16",
+    "expo-linking": "~56.0.12",
+    "expo-router": "~56.2.7",
     "expo-status-bar": "~56.0.4",
+    "nativewind": "^4.2.4",
     "react": "19.2.3",
-    "react-native": "0.85.3"
+    "react-native": "0.85.3",
+    "react-native-reanimated": "^4.4.0",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "4.25.2",
+    "tailwindcss": "^3.4.19"
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
@@ -14,6 +22,7 @@
   },
   "scripts": {
     "start": "expo start",
+    "dev": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
