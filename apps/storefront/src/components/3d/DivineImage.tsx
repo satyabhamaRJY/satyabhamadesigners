@@ -122,7 +122,7 @@ export function DivineImage({ url }: { url: string }) {
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uHover: { value: 0 },
       uResolution: { value: new THREE.Vector2(viewport.width, viewport.height) },
-      uImageRes: { value: new THREE.Vector2(texture.image.width, texture.image.height) }
+      uImageRes: { value: new THREE.Vector2((texture.image as any).width, (texture.image as any).height) }
     }),
     [texture, viewport]
   );
