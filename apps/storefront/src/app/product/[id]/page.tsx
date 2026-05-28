@@ -231,8 +231,8 @@ export default function ProductDetailsPage() {
 
                 <form onSubmit={handleConsultSubmit} className="space-y-4">
                   {/* Hidden Fields for Context */}
+                  {/* Hidden Fields for Context */}
                   <input type="hidden" name="productName" value={product.name} />
-                  <input type="hidden" name="productSku" value={product.sku} />
 
                   <div>
                     <label className="block text-xs font-serif uppercase tracking-widest text-stone-400 mb-1">Full Name</label>
