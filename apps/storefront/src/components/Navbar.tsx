@@ -23,7 +23,9 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 text-xl md:text-2xl font-serif tracking-widest text-gold italic font-semibold">
-            <img src="/logo.png" alt="Satyabhama Logo" className="w-10 h-10 object-contain rounded-full border border-gold/30" />
+            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gold/40 shadow-[0_0_15px_rgba(212,175,55,0.3)] bg-white">
+              <img src="/logo.png" alt="Satyabhama Logo" className="w-full h-full object-contain mix-blend-multiply" />
+            </div>
             SATYABHAMA
           </Link>
 
