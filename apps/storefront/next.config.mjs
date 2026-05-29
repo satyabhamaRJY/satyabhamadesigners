@@ -12,11 +12,11 @@ const nextConfig = {
     return [
       {
         source: '/admin',
-        destination: 'https://satyabhama-admin.vercel.app',
+        destination: process.env.ADMIN_URL || 'https://satyabhamadesigners-admin-dashboard.vercel.app',
       },
       {
         source: '/admin/:path*',
-        destination: 'https://satyabhama-admin.vercel.app/:path*',
+        destination: `${process.env.ADMIN_URL || 'https://satyabhamadesigners-admin-dashboard.vercel.app'}/:path*`,
       },
     ];
   },
