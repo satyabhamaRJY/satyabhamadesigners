@@ -112,7 +112,7 @@ export default function Home() {
             </span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-serif text-white leading-tight mb-6 drop-shadow-2xl">
+          <h1 className="text-2xl md:text-3xl font-serif text-white leading-tight mb-6 drop-shadow-2xl">
             Woven in <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-gold to-yellow-600">Gold.</span><br />
             Draped in Heritage.
           </h1>
