@@ -14,7 +14,14 @@ import {
   UploadCloud,
   CheckCircle,
   LogOut,
-  ShoppingCart
+  ShoppingCart,
+  Scissors,
+  Users2,
+  QrCode,
+  AlertTriangle,
+  Gift,
+  MessageCircle,
+  Globe
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -126,6 +133,16 @@ const mockOrders = [
   }
 ];
 
+const mockWeavers = [
+  { id: 'w1', name: 'Master Ramakant', region: 'Varanasi', specialty: 'Banarasi Brocade', activeLooms: 3, videoUrl: 'https://youtube.com/...' },
+  { id: 'w2', name: 'Lakshmi Narayan', region: 'Kanchipuram', specialty: 'Pure Gold Zari', activeLooms: 2, videoUrl: 'https://youtube.com/...' }
+];
+
+const mockTailoring = [
+  { id: 't1', orderId: 'LUX-10001', customerName: 'Priya Sharma', item: 'Ruby Red Silk Saree Blouse', status: 'In Stitching', measurements: 'File attached', assignedTo: 'Tailor Ramesh', dueDate: '2026-05-28' },
+  { id: 't2', orderId: 'LUX-10002', customerName: 'Neha Gupta', item: 'Golden Organza Suit Alteration', status: 'Measurements Received', measurements: 'Pending confirmation', assignedTo: 'Unassigned', dueDate: '2026-06-02' }
+];
+
 import Login from './Login';
 import POS from './pages/POS';
 import DigitalSareeCard from './pages/DigitalSareeCard';
@@ -170,7 +187,7 @@ export default function App() {
       }
     }
   }, []);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'catalog' | 'customers' | 'orders' | 'settings' | 'pos'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'catalog' | 'customers' | 'orders' | 'settings' | 'pos' | 'weavers' | 'tailoring'>('dashboard');
   const [stats, setStats] = useState(mockStats);
   const [categories, setCategories] = useState(mockCategories);
   const [products, setProducts] = useState(mockProducts);
@@ -197,6 +214,8 @@ export default function App() {
   const [prodDesc, setProdDesc] = useState('');
   const [prodPrice, setProdPrice] = useState('');
   const [prodDiscPrice, setProdDiscPrice] = useState('');
+  const [prodUsdPrice, setProdUsdPrice] = useState('');
+  const [prodGbpPrice, setProdGbpPrice] = useState('');
   const [prodSku, setProdSku] = useState('');
   const [prodStock, setProdStock] = useState('');
   const [prodWeight, setProdWeight] = useState('');
@@ -525,6 +544,8 @@ export default function App() {
     setProdDesc('');
     setProdPrice('');
     setProdDiscPrice('');
+    setProdUsdPrice('');
+    setProdGbpPrice('');
     setProdCategory('');
     setProdSku('');
     setProdStock('');
@@ -574,6 +595,24 @@ export default function App() {
             }`}
           >
             <ShoppingBag size={18} /> Catalog Manager
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('weavers')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm tracking-widest uppercase transition ${
+              activeTab === 'weavers' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/30' : 'text-stone-400 hover:text-stone-200 hover:bg-stone-900'
+            }`}
+          >
+            <Users2 size={18} /> Artisans & Weavers
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('tailoring')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded text-sm tracking-widest uppercase transition ${
+              activeTab === 'tailoring' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/30' : 'text-stone-400 hover:text-stone-200 hover:bg-stone-900'
+            }`}
+          >
+            <Scissors size={18} /> Tailoring Pipeline
           </button>
 
           <button 
@@ -716,6 +755,34 @@ export default function App() {
                 </div>
               </div>
             </div>
+
+            {/* Trend Intelligence Alerts */}
+            <div className="mt-8 bg-stone-900/50 border border-stone-800 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <AlertTriangle className="text-amber-500" size={20} />
+                <h3 className="text-xl font-serif text-amber-500">Trend Intelligence Alerts</h3>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-stone-950 p-4 rounded border border-stone-800 flex justify-between items-center">
+                  <div>
+                    <h4 className="text-stone-200 font-medium">Midnight Blue Georgette Zardosi Suit</h4>
+                    <p className="text-stone-400 text-sm">Selling 40% faster than usual. Only 4 left in stock.</p>
+                  </div>
+                  <button className="px-4 py-2 bg-stone-800 text-stone-200 text-xs uppercase tracking-widest rounded hover:bg-stone-700 transition">
+                    Re-order from Weaver
+                  </button>
+                </div>
+                <div className="bg-stone-950 p-4 rounded border border-stone-800 flex justify-between items-center">
+                  <div>
+                    <h4 className="text-stone-200 font-medium">Ruby Red Silk Bridal Salwar</h4>
+                    <p className="text-stone-400 text-sm">High cart abandonment rate this week. Consider sending a WhatsApp promotion.</p>
+                  </div>
+                  <button className="px-4 py-2 bg-stone-800 text-stone-200 text-xs uppercase tracking-widest rounded hover:bg-stone-700 transition">
+                    View Abandoned Carts
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -851,6 +918,106 @@ export default function App() {
         )}
 
         {/* ======================================================== */}
+        {/* WEAVERS & ARTISANS VIEW */}
+        {/* ======================================================== */}
+        {activeTab === 'weavers' && (
+          <div>
+            <header className="mb-8">
+              <h1 className="text-3xl font-serif">Artisans & Weavers Dashboard</h1>
+              <p className="text-stone-400">Track origin, manage weaver assignments, and generate Traceability QR codes.</p>
+            </header>
+
+            <div className="luxury-table-wrapper">
+              <table className="luxury-table">
+                <thead>
+                  <tr>
+                    <th>Artisan Name</th>
+                    <th>Region & Specialty</th>
+                    <th>Active Looms</th>
+                    <th>Traceability Link</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockWeavers.map(w => (
+                    <tr key={w.id}>
+                      <td>
+                        <div className="font-semibold text-stone-200">{w.name}</div>
+                        <div className="text-xs text-stone-500">ID: {w.id}</div>
+                      </td>
+                      <td>
+                        <div className="font-medium text-amber-500">{w.region}</div>
+                        <div className="text-xs text-stone-400">{w.specialty}</div>
+                      </td>
+                      <td>
+                        <span className="text-stone-300">{w.activeLooms} Active</span>
+                      </td>
+                      <td>
+                        <a href={w.videoUrl} target="_blank" className="text-blue-400 hover:underline text-xs flex items-center gap-1">
+                          <Video size={12} /> View Bio Video
+                        </a>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <button 
+                          className="px-3 py-1.5 bg-stone-900 border border-stone-700 text-stone-300 rounded text-xs hover:border-gold hover:text-gold transition-colors flex items-center gap-2 ml-auto"
+                          onClick={() => alert(`Generated QR for Shipping Box. Scans to: ${w.videoUrl}`)}
+                        >
+                          <QrCode size={14} /> Print QR Tag
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* TAILORING PIPELINE VIEW */}
+        {/* ======================================================== */}
+        {activeTab === 'tailoring' && (
+          <div>
+            <header className="mb-8">
+              <h1 className="text-3xl font-serif">Custom Stitching & Tailoring</h1>
+              <p className="text-stone-400">Manage bespoke orders, assignments, and production pipeline.</p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {['Measurements Received', 'In Stitching', 'Ready for QC'].map(stage => (
+                <div key={stage} className="bg-stone-900/40 rounded-xl border border-stone-800 p-4 min-h-[400px]">
+                  <h3 className="font-serif text-lg text-amber-500 mb-4 border-b border-stone-800 pb-2 flex justify-between">
+                    {stage}
+                    <span className="text-stone-500 text-sm">{mockTailoring.filter(t => t.status === stage).length}</span>
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {mockTailoring.filter(t => t.status === stage).map(task => (
+                      <div key={task.id} className="bg-stone-950 p-4 rounded border border-stone-800 hover:border-stone-600 transition-colors cursor-pointer">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-xs font-mono text-stone-500">{task.orderId}</span>
+                          <span className="text-[10px] uppercase bg-stone-900 px-2 py-0.5 rounded text-stone-400 border border-stone-800">Due: {task.dueDate}</span>
+                        </div>
+                        <h4 className="text-stone-200 font-medium mb-1">{task.customerName}</h4>
+                        <p className="text-stone-400 text-sm mb-3">{task.item}</p>
+                        
+                        <div className="flex justify-between items-center pt-3 border-t border-stone-900">
+                          <span className="text-xs text-stone-500 flex items-center gap-1"><Users2 size={12}/> {task.assignedTo}</span>
+                          <button className="text-xs text-amber-500 hover:underline">Update</button>
+                        </div>
+                      </div>
+                    ))}
+                    {mockTailoring.filter(t => t.status === stage).length === 0 && (
+                      <div className="text-center text-stone-600 text-sm py-8 border border-dashed border-stone-800 rounded">No tasks</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
         {/* CUSTOMER MANAGER VIEW */}
         {/* ======================================================== */}
         {activeTab === 'customers' && (
@@ -875,7 +1042,14 @@ export default function App() {
                   {customers.map(c => (
                     <tr key={c.id}>
                       <td>
-                        <div className="font-semibold text-stone-200">{c.name || 'Anonymous Guest'}</div>
+                        <div className="font-semibold text-stone-200 flex items-center gap-2">
+                          {c.name || 'Anonymous Guest'}
+                          {c.totalSpent > 200000 && (
+                            <span className="bg-amber-500/20 text-amber-500 text-[10px] px-2 py-0.5 rounded border border-amber-500/30 font-bold uppercase tracking-widest flex items-center gap-1">
+                              <Star size={10} className="fill-amber-500" /> VIP
+                            </span>
+                          )}
+                        </div>
                         <div className="text-xs text-stone-500">ID: {c.id.substring(0, 8)}...</div>
                       </td>
                       <td>
@@ -892,13 +1066,37 @@ export default function App() {
                       <td>
                         <span className="text-stone-300">{c.orderCount} orders</span>
                       </td>
-                      <td style={{ textAlign: 'right', fontWeight: 'bold' }} className="text-amber-400">
+                      <td style={{ textAlign: 'right', fontWeight: 'bold' }} className="text-amber-400 flex flex-col items-end">
                         {formatCurrency(c.totalSpent)}
+                        {c.totalSpent > 200000 && (
+                          <button className="text-[10px] text-amber-500 hover:text-amber-300 mt-1 flex items-center gap-1 uppercase tracking-widest">
+                            <Gift size={10} /> Send VIP Offer
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Abandoned Carts Section */}
+            <div className="mt-8 bg-stone-900/50 border border-stone-800 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <ShoppingCart className="text-stone-400" size={20} />
+                <h3 className="text-xl font-serif text-stone-200">High-Value Abandoned Carts</h3>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-stone-950 p-4 rounded border border-stone-800 flex justify-between items-center">
+                  <div>
+                    <h4 className="text-stone-200 font-medium">Guest User (+91 98*** **321)</h4>
+                    <p className="text-stone-400 text-sm">Abandoned <span className="text-amber-500">Golden Organza Sharara Set</span> (₹2,10,000) 2 hours ago.</p>
+                  </div>
+                  <button className="px-4 py-2 bg-[#25D366]/20 text-[#25D366] border border-[#25D366]/30 text-xs uppercase tracking-widest rounded hover:bg-[#25D366]/30 transition flex items-center gap-2">
+                    <MessageCircle size={14} /> Recover via WhatsApp
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -1132,6 +1330,36 @@ export default function App() {
                     value={prodDiscPrice}
                     onChange={(e) => setProdDiscPrice(e.target.value)}
                   />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="luxury-label">Global Pricing (USD)</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500">$</span>
+                    <input 
+                      type="number" 
+                      className="luxury-input pl-8" 
+                      placeholder="e.g. 2500"
+                      value={prodUsdPrice}
+                      onChange={(e) => setProdUsdPrice(e.target.value)}
+                    />
+                  </div>
+                  <p className="text-[10px] text-stone-500 mt-1">Leave empty to auto-calculate from INR</p>
+                </div>
+                <div className="form-group">
+                  <label className="luxury-label">Global Pricing (GBP)</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500">£</span>
+                    <input 
+                      type="number" 
+                      className="luxury-input pl-8" 
+                      placeholder="e.g. 1950"
+                      value={prodGbpPrice}
+                      onChange={(e) => setProdGbpPrice(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
 

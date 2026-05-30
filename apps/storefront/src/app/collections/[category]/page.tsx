@@ -96,6 +96,31 @@ export default function CollectionPage() {
           {/* Product Grid Area */}
           <div className="flex-1">
             
+            {/* Quick Filter Pills */}
+            <div className="mb-6 flex flex-wrap gap-2 items-center">
+              <span className="text-stone-500 text-xs uppercase tracking-widest mr-2">Quick Filters:</span>
+              {['Bridal', 'Haldi', 'Corporate', 'Organza', 'Pure Silk', 'Georgette'].map(pill => (
+                <button
+                  key={pill}
+                  onClick={() => {
+                    const isOccasion = ['Bridal', 'Haldi', 'Corporate', 'Reception', 'Party Wear'].includes(pill);
+                    const section = isOccasion ? 'Occasion' : 'Fabric';
+                    // Toggle the filter
+                    const key = section === 'Occasion' ? 'Occasions' : 'Fabrics';
+                    const isActive = activeFilters[key].includes(pill);
+                    handleFilterChange(section, pill, !isActive);
+                  }}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    (activeFilters.Occasions.includes(pill) || activeFilters.Fabrics.includes(pill))
+                      ? 'bg-gold text-black border-gold shadow-[0_0_10px_rgba(212,175,55,0.4)]'
+                      : 'bg-stone-900 border-stone-700 text-stone-300 hover:border-gold hover:text-gold'
+                  }`}
+                >
+                  {pill}
+                </button>
+              ))}
+            </div>
+
             {/* Toolbar */}
             <div className="flex justify-between items-center mb-6 bg-stone-900/40 p-4 rounded-lg border border-stone-800/50">
               <div className="text-stone-400 text-sm">

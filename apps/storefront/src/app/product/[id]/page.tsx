@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { catalog } from '@/lib/mockCatalog';
-import { Star, Sparkles, ShoppingBag, Video, X, CheckCircle } from 'lucide-react';
+import { Star, Sparkles, ShoppingBag, Video, X, CheckCircle, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import { UpiCheckoutModal } from '@/components/UpiCheckoutModal';
 
@@ -112,9 +112,19 @@ export default function ProductDetailsPage() {
 
             <button 
               onClick={() => setCheckoutProduct({ name: product.name, price: product.price })}
-              className="w-full bg-gold text-black font-bold uppercase tracking-widest py-4 rounded hover:bg-white transition-colors flex items-center justify-center gap-2 mb-4"
+              className="w-full bg-gold text-black font-bold uppercase tracking-widest py-4 rounded hover:bg-white transition-colors flex items-center justify-center gap-2 mb-3"
             >
               <ShoppingBag size={18} /> Buy Now (UPI)
+            </button>
+
+            <button 
+              onClick={() => {
+                const message = `Hello Satyabhama Concierge, I am interested in the ${product.name} (₹${product.price.toLocaleString()}). Could you assist me with blouse stitching details?`;
+                window.open(`https://wa.me/916309055764?text=${encodeURIComponent(message)}`, '_blank');
+              }}
+              className="w-full bg-[#25D366] text-white font-bold uppercase tracking-widest py-4 rounded hover:bg-[#128C7E] transition-colors flex items-center justify-center gap-2 mb-3 shadow-[0_0_15px_rgba(37,211,102,0.3)]"
+            >
+              <MessageCircle size={18} /> Inquire on WhatsApp
             </button>
             
             <button 
