@@ -182,6 +182,8 @@ export default function App() {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [isEditingProduct, setIsEditingProduct] = useState(false);
   const [currentProductId, setCurrentProductId] = useState('');
+  const [isEditingCategory, setIsEditingCategory] = useState(false);
+  const [currentCategoryId, setCurrentCategoryId] = useState('');
   
   // Category Form State
   const [catName, setCatName] = useState('');
@@ -266,8 +268,8 @@ export default function App() {
     }
   };
 
-  // Add Category Handler
-  const handleCreateCategory = async (e: React.FormEvent) => {
+  // Add or Edit Category Handler
+  const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
       name: catName,
@@ -277,8 +279,16 @@ export default function App() {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/catalog/categories`, {
-        method: 'POST',
+      let url = `${API_BASE}/catalog/categories`;
+      let method = 'POST';
+
+      if (isEditingCategory) {
+        url = `${API_BASE}/catalog/categories/${currentCategoryId}`;
+        method = 'PUT';
+      }
+
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           'x-admin-bypass': 'true'
@@ -287,23 +297,43 @@ export default function App() {
       });
       const data = await res.json();
       if (data.success) {
-        setCategories([...categories, data.data]);
         setShowCategoryModal(false);
         resetCategoryForm();
         fetchDashboardData();
       }
     } catch (err) {
       // Local Mock Addition
-      const mockNewCat = {
-        id: Math.random().toString(),
-        name: payload.name,
-        slug: payload.slug,
-        description: payload.description,
-        productsCount: 0
-      };
-      setCategories([...categories, mockNewCat]);
+      if (isEditingCategory) {
+        setCategories(categories.map(c => c.id === currentCategoryId ? { ...c, ...payload } : c));
+      } else {
+        const mockNewCat = {
+          id: Math.random().toString(),
+          name: payload.name,
+          slug: payload.slug,
+          description: payload.description,
+          productsCount: 0
+        };
+        setCategories([...categories, mockNewCat]);
+      }
       setShowCategoryModal(false);
       resetCategoryForm();
+    }
+  };
+
+  // Delete Category
+  const handleDeleteCategory = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this category?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/catalog/categories/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-bypass': 'true' }
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchDashboardData();
+      }
+    } catch (err) {
+      setCategories(categories.filter(c => c.id !== id));
     }
   };
 
@@ -433,7 +463,19 @@ export default function App() {
     setShowProductModal(true);
   };
 
+  const editCategoryTrigger = (c: any) => {
+    setIsEditingCategory(true);
+    setCurrentCategoryId(c.id);
+    setCatName(c.name);
+    setCatSlug(c.slug);
+    setCatDesc(c.description || '');
+    setCatImage(c.image || '');
+    setShowCategoryModal(true);
+  };
+
   const resetCategoryForm = () => {
+    setIsEditingCategory(false);
+    setCurrentCategoryId('');
     setCatName('');
     setCatSlug('');
     setCatDesc('');
@@ -653,7 +695,7 @@ export default function App() {
                 <p className="text-stone-400">Curate luxury saree designs and heritage categories</p>
               </div>
               <div className="flex gap-4">
-                <button className="luxury-btn" onClick={() => setShowCategoryModal(true)}>
+                <button className="luxury-btn" onClick={() => { resetCategoryForm(); setShowCategoryModal(true); }}>
                   <Plus size={16} /> Create Category
                 </button>
                 <button className="luxury-btn" onClick={() => { resetProductForm(); setShowProductModal(true); }}>
@@ -667,8 +709,18 @@ export default function App() {
               <h2 className="text-xl font-serif mb-4 text-stone-300">Weaving Heritage (Categories)</h2>
               <div className="metrics-grid">
                 {categories.map(cat => (
-                  <div key={cat.id} className="metric-card" style={{ borderLeft: '3px solid var(--color-gold)' }}>
-                    <h3 className="font-serif text-lg">{cat.name}</h3>
+                  <div key={cat.id} className="metric-card relative group" style={{ borderLeft: '3px solid var(--color-gold)' }}>
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-serif text-lg">{cat.name}</h3>
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button className="text-stone-400 hover:text-amber-500" onClick={() => editCategoryTrigger(cat)}>
+                          <Edit2 size={14} />
+                        </button>
+                        <button className="text-stone-400 hover:text-red-500" onClick={() => handleDeleteCategory(cat.id)}>
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
                     <p className="text-xs text-stone-500 mt-1 mb-2 font-mono">slug: {cat.slug}</p>
                     <p className="text-sm text-stone-400 line-clamp-2">{cat.description}</p>
                   </div>
@@ -902,16 +954,19 @@ export default function App() {
       </main>
 
       {/* ======================================================== */}
-      {/* CATEGORY DIALOG MODAL */}
+      {/* MODALS */}
       {/* ======================================================== */}
       {showCategoryModal && (
         <div className="luxury-modal-overlay">
           <div className="luxury-modal">
             <div className="modal-header">
-              <h2 className="text-xl font-serif text-amber-200">Register Saree Class (Category)</h2>
+              <h2 className="text-xl font-serif text-amber-200">
+                {isEditingCategory ? 'Update Heritage Class' : 'Register Saree Class (Category)'}
+              </h2>
               <button className="close-btn" onClick={() => setShowCategoryModal(false)}>&times;</button>
             </div>
-            <form onSubmit={handleCreateCategory} className="luxury-form">
+            
+            <form onSubmit={handleCategorySubmit} className="luxury-form">
               <div className="form-group">
                 <label className="luxury-label">Category Name</label>
                 <input 
@@ -919,8 +974,8 @@ export default function App() {
                   className="luxury-input" 
                   placeholder="e.g. Banarasi Brocade"
                   value={catName}
-                  onChange={(e) => setCatName(e.target.value)}
-                  required 
+                  onChange={e => setCatName(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -930,7 +985,7 @@ export default function App() {
                   className="luxury-input" 
                   placeholder="e.g. banarasi-brocade (Leave blank to auto-generate)"
                   value={catSlug}
-                  onChange={(e) => setCatSlug(e.target.value)}
+                  onChange={e => setCatSlug(e.target.value)}
                 />
               </div>
               <div className="form-group">
@@ -940,7 +995,7 @@ export default function App() {
                   rows={3} 
                   placeholder="Rich history of this weaving cluster..."
                   value={catDesc}
-                  onChange={(e) => setCatDesc(e.target.value)}
+                  onChange={e => setCatDesc(e.target.value)}
                 />
               </div>
               <div className="form-group">
@@ -950,15 +1005,14 @@ export default function App() {
                   className="luxury-input" 
                   placeholder="https://..."
                   value={catImage}
-                  onChange={(e) => setCatImage(e.target.value)}
+                  onChange={e => setCatImage(e.target.value)}
                 />
               </div>
+              
               <div className="flex justify-end gap-4 mt-4">
-                <button type="button" className="luxury-btn" style={{ background: 'none', borderColor: 'transparent' }} onClick={() => setShowCategoryModal(false)}>
-                  Cancel
-                </button>
+                <button type="button" className="luxury-btn" style={{ background: 'none', borderColor: 'transparent' }} onClick={() => setShowCategoryModal(false)}>Cancel</button>
                 <button type="submit" className="luxury-btn">
-                  Publish Category
+                  {isEditingCategory ? 'Save Changes' : 'Publish Category'}
                 </button>
               </div>
             </form>

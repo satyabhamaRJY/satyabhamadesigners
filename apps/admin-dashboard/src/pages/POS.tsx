@@ -10,6 +10,9 @@ export default function POS() {
   const [barcodeInput, setBarcodeInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<any>(null);
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [discountPercent, setDiscountPercent] = useState<number>(0);
   
   // Hidden input ref to capture scanner
   const inputRef = useRef<HTMLInputElement>(null);
@@ -74,6 +77,10 @@ export default function POS() {
 
   const checkout = async () => {
     if (cart.length === 0) return;
+    if (!customerPhone || customerPhone.length < 10) {
+      alert("Please enter a valid 10-digit customer phone number for SMS billing.");
+      return;
+    }
     setIsProcessing(true);
     
     const items = cart.map(item => ({ productId: item.id, quantity: item.quantity }));
@@ -85,13 +92,21 @@ export default function POS() {
           'Content-Type': 'application/json',
           'x-admin-bypass': 'true' // Bypass auth for demo
         },
-        body: JSON.stringify({ items })
+        body: JSON.stringify({ 
+          items,
+          customerName,
+          customerPhone,
+          discountPercent
+        })
       });
       
       const data = await res.json();
       if (data.success) {
         setCompletedOrder(data.data);
         setCart([]);
+        setCustomerName('');
+        setCustomerPhone('');
+        setDiscountPercent(0);
         // Short delay to ensure React renders the hidden InvoicePrint before triggering print
         setTimeout(() => {
           handlePrint();
@@ -107,7 +122,11 @@ export default function POS() {
     }
   };
 
-  const total = cart.reduce((sum, item) => sum + (item.discountPrice ? Number(item.discountPrice) : Number(item.price)) * item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + (item.discountPrice ? Number(item.discountPrice) : Number(item.price)) * item.quantity, 0);
+  const discountAmount = subtotal * (discountPercent / 100);
+  const totalAfterDiscount = subtotal - discountAmount;
+  const tax = totalAfterDiscount * 0.05; // 5% tax
+  const finalTotal = totalAfterDiscount + tax;
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[calc(100vh-140px)]">
@@ -170,22 +189,62 @@ export default function POS() {
           <h2 className="text-xl font-serif text-amber-500">Current Bill</h2>
         </div>
         
-        <div className="flex-1 p-4 flex flex-col">
+        <div className="flex-1 p-4 flex flex-col overflow-auto">
+          <div className="space-y-4 mb-6 border-b border-stone-800 pb-4">
+            <div>
+              <label className="block text-xs text-stone-500 mb-1 uppercase tracking-widest">Customer Name</label>
+              <input 
+                type="text" 
+                value={customerName}
+                onChange={e => setCustomerName(e.target.value)}
+                className="w-full bg-stone-950 border border-stone-800 rounded px-3 py-2 text-stone-200 focus:border-amber-500 focus:outline-none transition" 
+                placeholder="Optional"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-stone-500 mb-1 uppercase tracking-widest">Phone Number *</label>
+              <input 
+                type="tel" 
+                value={customerPhone}
+                onChange={e => setCustomerPhone(e.target.value)}
+                className="w-full bg-stone-950 border border-stone-800 rounded px-3 py-2 text-stone-200 focus:border-amber-500 focus:outline-none transition" 
+                placeholder="For SMS receipt"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-stone-500 mb-1 uppercase tracking-widest">Owner Discount (%)</label>
+              <input 
+                type="number" 
+                min="0"
+                max="100"
+                value={discountPercent}
+                onChange={e => setDiscountPercent(Number(e.target.value))}
+                className="w-full bg-stone-950 border border-stone-800 rounded px-3 py-2 text-stone-200 focus:border-amber-500 focus:outline-none transition" 
+              />
+            </div>
+          </div>
+
           <div className="space-y-3 flex-1">
             <div className="flex justify-between text-stone-400">
               <span>Subtotal</span>
-              <span>₹{total.toLocaleString('en-IN')}</span>
+              <span>₹{subtotal.toLocaleString('en-IN')}</span>
             </div>
+            {discountPercent > 0 && (
+              <div className="flex justify-between text-green-500">
+                <span>Discount ({discountPercent}%)</span>
+                <span>-₹{discountAmount.toLocaleString('en-IN', {maximumFractionDigits: 0})}</span>
+              </div>
+            )}
             <div className="flex justify-between text-stone-400">
-              <span>Tax (Included)</span>
-              <span>₹{(total * 0.05).toLocaleString('en-IN')}</span>
+              <span>Tax (5%)</span>
+              <span>₹{tax.toLocaleString('en-IN', {maximumFractionDigits: 0})}</span>
             </div>
           </div>
           
           <div className="border-t border-stone-800 pt-4 mb-6">
             <div className="flex justify-between text-xl font-bold text-amber-400">
               <span>Total</span>
-              <span>₹{total.toLocaleString('en-IN')}</span>
+              <span>₹{finalTotal.toLocaleString('en-IN', {maximumFractionDigits: 0})}</span>
             </div>
           </div>
 

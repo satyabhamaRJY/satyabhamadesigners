@@ -388,9 +388,13 @@ router.put('/:id/status', requireAdmin, async (req: AuthenticatedRequest, res: R
 });
 // 8. POS Checkout (Physical Store)
 router.post('/pos', async (req, res) => {
-  const { items } = req.body;
+  const { items, customerName, customerPhone, discountPercent } = req.body;
   if (!items || !Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ success: false, error: 'Missing POS order items' });
+  }
+
+  if (!customerPhone) {
+    return res.status(400).json({ success: false, error: 'Customer phone number is required for POS SMS billing' });
   }
 
   try {
@@ -407,8 +411,22 @@ router.post('/pos', async (req, res) => {
       validatedItems.push({ productId: product.id, quantity: item.quantity, price: activePrice });
     }
 
+    // Apply Owner Discount
+    const validDiscount = discountPercent && discountPercent >= 0 && discountPercent <= 100 ? discountPercent : 0;
+    const discountAmount = subtotal * (validDiscount / 100);
+    const totalAfterDiscount = subtotal - discountAmount;
+    const tax = totalAfterDiscount * 0.05; // 5% tax
+    const finalTotal = totalAfterDiscount + tax;
+
     const orderCount = await prisma.order.count();
     const orderNumber = `POS-${10001 + orderCount}`;
+
+    // Upsert Customer Profile
+    const customer = await prisma.customer.upsert({
+      where: { phone: customerPhone },
+      update: { name: customerName || undefined },
+      create: { phone: customerPhone, name: customerName || 'Walk-in Customer' }
+    });
 
     // Transaction: Create Order & Deduct Stock
     const dbOrder = await prisma.$transaction(async (tx) => {
@@ -425,13 +443,14 @@ router.post('/pos', async (req, res) => {
         data: {
           orderNumber,
           source: 'POS',
-          totalAmount: subtotal + (subtotal * 0.05), // + 5% tax
+          customerId: customer.id,
+          totalAmount: finalTotal,
           shippingAmount: 0,
-          discountAmount: 0,
+          discountAmount: discountAmount,
           status: 'DELIVERED', // Instant delivery for POS
           paymentStatus: 'COMPLETED',
           paymentMethod: 'POS_CASH_CARD',
-          shippingAddress: { name: 'In-Store Purchase' },
+          shippingAddress: { name: customerName || 'Store Customer', phone: customerPhone, addressLine1: 'In-Store Purchase' },
           packageWeight: 0,
           items: {
             create: validatedItems.map(vi => ({
@@ -444,6 +463,11 @@ router.post('/pos', async (req, res) => {
         include: { items: { include: { product: true } } }
       });
     });
+
+    // SMS Billing Integration Hook
+    // In production, this connects to Twilio / Fast2SMS API.
+    console.log(`[SMS INTEGRATION] Firing SMS to ${customerPhone}:`);
+    console.log(`"Thank you ${customerName || ''}! Your bill for ₹${finalTotal} at Satyabhama Designers is paid. View e-receipt: https://admin.satyabhamadesigners.com/receipt/${orderNumber}"`);
 
     return res.status(201).json({ success: true, data: dbOrder });
   } catch (error: any) {

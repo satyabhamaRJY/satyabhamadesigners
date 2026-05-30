@@ -36,16 +36,78 @@ export default function CheckoutPage() {
 
   const handleFinalPayment = async () => {
     setLoading(true);
-
+    
     try {
-      // Simulate payment processing delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // 1. Send items & shipping to our backend to generate Razorpay order ID
+      const items = cart.map(item => ({ productId: item.id, quantity: item.quantity }));
       
-      // Simulate successful payment automatically
-      const mockOrderNumber = 'LUX-' + Math.floor(10000 + Math.random() * 90000);
-      setOrderNumber(mockOrderNumber);
-      setStep('success');
-      clearCart();
+      const createRes = await fetch('http://localhost:5000/api/orders/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items, shippingAddress: shipping })
+      });
+      
+      const createData = await createRes.json();
+      if (!createData.success) throw new Error(createData.error || 'Failed to create order');
+
+      const { razorpayOrder, order: dbOrder } = createData.data;
+
+      // 2. Load Razorpay script dynamically
+      const Razorpay = await loadRazorpay();
+      
+      // 3. Initialize Razorpay Modal
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_mock_123', // Demo fallback key
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: 'Satyabhama Designers',
+        description: 'Luxury Saree Registry',
+        image: '/logo.png',
+        order_id: razorpayOrder.id,
+        handler: async function (response: any) {
+          try {
+            // 4. Verify payment via our backend
+            const verifyRes = await fetch('http://localhost:5000/api/orders/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              setOrderNumber(dbOrder.orderNumber);
+              setStep('success');
+              clearCart();
+            } else {
+              alert('Payment Verification Failed: ' + verifyData.error);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Error verifying payment.');
+          }
+        },
+        prefill: {
+          name: shipping.name,
+          email: shipping.email,
+          contact: shipping.phone
+        },
+        theme: {
+          color: '#d4af37' // gold
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      
+      rzp.on('payment.failed', function (response: any) {
+        alert(`Payment failed: ${response.error.description}`);
+      });
+
+      rzp.open();
+
     } catch (error: any) {
       console.error(error);
       alert(error.message);
