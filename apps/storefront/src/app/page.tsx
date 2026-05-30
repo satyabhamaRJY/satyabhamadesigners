@@ -73,7 +73,7 @@ export default function Home() {
             className="w-full h-full object-cover object-[center_25%] md:object-[center_20%] opacity-70"
           >
             {/* Replace this URL with your actual saree video file in the /public folder (e.g. /hero-video.mp4) */}
-            <source src="/hero-video.mp4.mp4" type="video/mp4" />
+            <source src="/hero-video.mp4" type="video/mp4" />
           </video>
           {/* Gradient Overlay to make text readable */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 pointer-events-none" />
