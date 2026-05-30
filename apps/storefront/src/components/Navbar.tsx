@@ -23,7 +23,7 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 text-xl md:text-2xl font-serif tracking-widest text-gold italic font-semibold group">
-            <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center overflow-visible transition-transform duration-500 group-hover:scale-105">
+            <div className="relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center overflow-visible transition-transform duration-500 group-hover:scale-105">
               <div 
                 className="w-full h-full bg-gradient-to-tr from-amber-200 via-gold to-yellow-600 drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]"
                 style={{
