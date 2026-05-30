@@ -268,6 +268,30 @@ export default function App() {
     }
   };
 
+  // Handle local file upload
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, setter: (url: string) => void) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const res = await fetch(`${API_BASE}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        setter(data.data.url);
+      } else {
+        alert('Upload failed: ' + data.error);
+      }
+    } catch (error) {
+      alert('Upload failed: Could not connect to server.');
+    }
+  };
+
   // Add or Edit Category Handler
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -999,11 +1023,29 @@ export default function App() {
                 />
               </div>
               <div className="form-group">
-                <label className="luxury-label">Heritage Backdrop Image (URL)</label>
+                <label className="luxury-label">Heritage Backdrop Image</label>
+                <div className="flex gap-2">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={(e) => handleFileUpload(e, setCatImage)}
+                    className="block w-full text-sm text-stone-400
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-stone-900 file:text-amber-500
+                      hover:file:bg-stone-800 transition"
+                  />
+                </div>
+                {catImage && (
+                  <div className="mt-2">
+                    <img src={catImage} alt="Preview" className="h-20 object-cover rounded border border-stone-800" />
+                  </div>
+                )}
                 <input 
                   type="text" 
-                  className="luxury-input" 
-                  placeholder="https://..."
+                  className="luxury-input mt-2" 
+                  placeholder="Or paste direct image URL (e.g. https://images.unsplash.com/...)"
                   value={catImage}
                   onChange={e => setCatImage(e.target.value)}
                 />
@@ -1170,18 +1212,33 @@ export default function App() {
               </div>
 
               <div className="form-group">
-                <label className="luxury-label">High-Resolution Photo (URL)</label>
-                <div className="border-2 border-dashed border-stone-800 hover:border-amber-500 rounded p-4 text-center cursor-pointer transition">
+                <label className="luxury-label">High-Resolution Photo</label>
+                <div className="border-2 border-dashed border-stone-800 hover:border-amber-500 rounded p-4 text-center transition">
                   <UploadCloud size={30} className="mx-auto text-stone-600 mb-2" />
-                  <span className="text-xs text-stone-400 block mb-1">Click to select file or drag-and-drop here</span>
-                  <span className="text-[10px] text-stone-600">Simulates AWS S3 or Supabase Storage image upload</span>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={(e) => handleFileUpload(e, setProdImage)}
+                    className="block w-full text-sm text-stone-400
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-stone-900 file:text-amber-500
+                      hover:file:bg-stone-800 transition mx-auto"
+                  />
+                  <span className="text-[10px] text-stone-600 block mt-2">Uploads locally to the backend server</span>
                 </div>
+                {prodImage && (
+                  <div className="mt-2">
+                    <img src={prodImage} alt="Preview" className="h-20 object-cover rounded border border-stone-800" />
+                  </div>
+                )}
                 <input 
                   type="text" 
                   className="luxury-input mt-2" 
                   placeholder="Or paste direct image URL (e.g. https://images.unsplash.com/...)"
                   value={prodImage}
-                  onChange={(e) => setProdImage(e.target.value)}
+                  onChange={e => setProdImage(e.target.value)}
                 />
               </div>
 

@@ -12,6 +12,8 @@ import customerRoutes from './routes/customers';
 import aiRoutes from './routes/ai';
 import consultationRoutes from './routes/consultations';
 import trousseauRoutes from './routes/trousseau';
+import uploadRoutes from './routes/upload';
+import path from 'path';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -38,6 +40,10 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/trousseau', trousseauRoutes);
+app.use('/api/upload', uploadRoutes);
+
+// Serve static uploads folder
+app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
 // Health check and db connectivity verification
 app.get('/api/health', async (req, res) => {
