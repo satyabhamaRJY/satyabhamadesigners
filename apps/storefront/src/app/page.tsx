@@ -105,7 +105,7 @@ export default function Home() {
         </div>
 
         {/* Foreground Text */}
-        <div className="relative z-20 flex flex-col justify-end pb-24 md:pb-32 px-8 md:px-20 h-full max-w-2xl mt-auto">
+        <div className="relative z-20 flex flex-col justify-end pb-12 md:pb-16 pl-4 md:pl-10 pr-8 md:pr-20 h-full max-w-2xl mt-auto">
           <div className="mb-4 inline-block">
             <span className="text-gold tracking-widest uppercase text-xs border border-gold/30 px-4 py-1.5 rounded-full bg-black/50 backdrop-blur-md shadow-[0_0_15px_rgba(212,175,55,0.2)]">
               The Royal Collection
@@ -127,9 +127,9 @@ export default function Home() {
             </button>
             <button 
               onClick={() => setShowConsultModal(true)}
-              className="border border-stone-500 text-stone-200 px-6 py-3 font-bold uppercase tracking-widest hover:border-gold hover:text-gold transition-colors text-xs bg-black/40 backdrop-blur-md w-fit"
+              className="border border-stone-500 text-stone-200 px-6 py-3 font-bold uppercase tracking-widest hover:border-gold hover:text-gold transition-colors text-xs bg-black/40 backdrop-blur-md w-fit flex items-center gap-2"
             >
-              Virtual Try-On (Video)
+              <Video size={14} /> Video Consultation
             </button>
           </div>
         </div>

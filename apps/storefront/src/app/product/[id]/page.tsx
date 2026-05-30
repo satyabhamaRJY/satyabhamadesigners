@@ -72,9 +72,6 @@ export default function ProductDetailsPage() {
             </div>
             <div className="relative flex-1 aspect-[3/4] rounded-lg overflow-hidden border border-stone-800 bg-stone-900">
               <Image src={selectedImage} alt={product.name} fill className="object-cover" />
-              <button className="absolute bottom-6 right-6 bg-black/80 backdrop-blur-md text-gold border border-gold/30 hover:bg-gold hover:text-black px-4 py-3 rounded-full text-xs font-serif tracking-widest uppercase transition-colors shadow-heavy flex items-center gap-2">
-                <Sparkles size={16} /> Virtual Try-On
-              </button>
             </div>
           </div>
 
