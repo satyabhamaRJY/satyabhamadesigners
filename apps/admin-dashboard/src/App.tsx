@@ -276,6 +276,17 @@ export default function App() {
     const formData = new FormData();
     formData.append('image', file);
 
+    const fallbackToLocal = () => {
+      console.warn('API connection failed. Using local blob URL for image preview.');
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (ev.target?.result) {
+          setter(ev.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    };
+
     try {
       const res = await fetch(`${API_BASE}/upload`, {
         method: 'POST',
@@ -285,10 +296,10 @@ export default function App() {
       if (data.success) {
         setter(data.data.url);
       } else {
-        alert('Upload failed: ' + data.error);
+        fallbackToLocal();
       }
     } catch (error) {
-      alert('Upload failed: Could not connect to server.');
+      fallbackToLocal();
     }
   };
 
