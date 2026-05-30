@@ -43,8 +43,7 @@ export default function Footer() {
             <h3 className="text-stone-200 font-medium uppercase tracking-widest mb-6 text-xs">Customer Care</h3>
             <ul className="space-y-4">
               <li><Link href="/contact" className="hover:text-gold transition">Contact Us</Link></li>
-              <li><Link href="/return-policy" className="hover:text-gold transition">Return & Exchange Policy</Link></li>
-              <li><Link href="/shipping" className="hover:text-gold transition">Shipping Information</Link></li>
+              <li><Link href="/return-policy" className="hover:text-gold transition">Shipping & Return Policy</Link></li>
               <li><Link href="/faqs" className="hover:text-gold transition">FAQs</Link></li>
             </ul>
           </div>

@@ -8,7 +8,7 @@ export default function ReturnPolicyPage() {
       <Navbar />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h1 className="text-4xl md:text-5xl font-serif text-gold tracking-widest text-center mb-16">Return & Exchange Policy</h1>
+        <h1 className="text-4xl md:text-5xl font-serif text-gold tracking-widest text-center mb-16">Shipping & Return Policy</h1>
         
         <div className="space-y-12 text-stone-300 font-light leading-relaxed">
           <section>
@@ -16,6 +16,18 @@ export default function ReturnPolicyPage() {
             <p>
               At Satyabhama Designers, every garment undergoes rigorous quality checks before it is dispatched from our atelier. Due to the handcrafted nature of our products, slight variations in color, texture, or weave are considered hallmarks of authentic handloom artistry, not defects.
             </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-serif text-stone-200 mb-4 uppercase tracking-widest">Global Shipping</h2>
+            <p className="mb-4">
+              We proudly offer secure, insured global shipping for all our patrons. Each luxury piece is meticulously packed in our signature heirloom boxes to ensure it arrives in pristine condition.
+            </p>
+            <ul className="list-disc pl-5 space-y-3 text-stone-400">
+              <li>Domestic orders within India are typically delivered within 3-5 business days.</li>
+              <li>International orders take approximately 7-14 business days depending on the destination.</li>
+              <li>All packages require a signature upon delivery to ensure security.</li>
+            </ul>
           </section>
 
           <section>
