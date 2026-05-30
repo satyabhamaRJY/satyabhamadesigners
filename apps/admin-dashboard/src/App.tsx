@@ -21,7 +21,8 @@ import {
   AlertTriangle,
   Gift,
   MessageCircle,
-  Globe
+  Video,
+  Star
 } from 'lucide-react';
 import { 
   AreaChart, 

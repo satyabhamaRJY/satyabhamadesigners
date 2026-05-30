@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { ShoppingBag, ArrowRight, Star, Truck, Shield, Clock, X, CheckCircle, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Star, Truck, Shield, Clock, X, CheckCircle, Volume2, VolumeX, Play, Pause, Video } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Scene from '@/components/3d/Scene';
