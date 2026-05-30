@@ -1185,6 +1185,128 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {/* ======================================================== */}
+        {/* WEAVERS VIEW */}
+        {/* ======================================================== */}
+        {activeTab === 'weavers' && (
+          <div>
+            <header className="mb-8">
+              <h1 className="text-3xl font-serif">Artisans & Weavers Dashboard</h1>
+              <p className="text-stone-400">Track weaver origin, active looms, and generate Traceability QR Tags.</p>
+            </header>
+
+            <div className="luxury-table-wrapper">
+              <table className="luxury-table">
+                <thead>
+                  <tr>
+                    <th>Artisan Name</th>
+                    <th>Cluster / Origin</th>
+                    <th>Specialty</th>
+                    <th>Active Looms</th>
+                    <th>Traceability Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="font-serif text-stone-200">Ramesh Kumar</td>
+                    <td className="text-stone-400 text-sm">Varanasi, UP</td>
+                    <td className="text-stone-300">Banarasi Brocade</td>
+                    <td className="text-stone-400 font-mono">3 Active</td>
+                    <td>
+                      <button className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/30 rounded text-[10px] tracking-widest uppercase hover:bg-amber-500/20 transition flex items-center gap-2">
+                        <QrCode size={12} /> Print QR Tag
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="font-serif text-stone-200">Lakshmi Devi</td>
+                    <td className="text-stone-400 text-sm">Kanchipuram, TN</td>
+                    <td className="text-stone-300">Pure Kanjeevaram</td>
+                    <td className="text-stone-400 font-mono">1 Active</td>
+                    <td>
+                      <button className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/30 rounded text-[10px] tracking-widest uppercase hover:bg-amber-500/20 transition flex items-center gap-2">
+                        <QrCode size={12} /> Print QR Tag
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* TAILORING PIPELINE VIEW */}
+        {/* ======================================================== */}
+        {activeTab === 'tailoring' && (
+          <div>
+            <header className="mb-8 flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-serif">Tailoring & Custom Stitching</h1>
+                <p className="text-stone-400">Kanban Pipeline for Bespoke Blouses & Alterations</p>
+              </div>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Column 1 */}
+              <div className="bg-stone-900/40 rounded-xl p-4 border border-stone-800">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-serif text-stone-300 uppercase tracking-widest text-sm">Measurements Received</h3>
+                  <span className="bg-stone-800 text-stone-400 px-2 py-0.5 rounded text-xs">2</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-stone-950 p-4 rounded border border-stone-800 border-l-4 border-l-amber-500">
+                    <h4 className="font-medium text-stone-200 text-sm mb-1">Order #ORD-9021</h4>
+                    <p className="text-stone-500 text-xs mb-3">Banarasi Silk Blouse • Size 34</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] text-stone-400 uppercase">Due: 2 Days</span>
+                      <button className="text-xs text-amber-500 hover:text-amber-400">Move to Stitching &rarr;</button>
+                    </div>
+                  </div>
+                  <div className="bg-stone-950 p-4 rounded border border-stone-800 border-l-4 border-l-amber-500">
+                    <h4 className="font-medium text-stone-200 text-sm mb-1">Order #ORD-8810</h4>
+                    <p className="text-stone-500 text-xs mb-3">Fall & Pico Attachment</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] text-stone-400 uppercase">Due: 1 Day</span>
+                      <button className="text-xs text-amber-500 hover:text-amber-400">Move to Stitching &rarr;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Column 2 */}
+              <div className="bg-stone-900/40 rounded-xl p-4 border border-stone-800">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-serif text-amber-500 uppercase tracking-widest text-sm">In Stitching</h3>
+                  <span className="bg-amber-500/20 text-amber-500 px-2 py-0.5 rounded text-xs">1</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-stone-950 p-4 rounded border border-stone-800 border-l-4 border-l-emerald-500">
+                    <h4 className="font-medium text-stone-200 text-sm mb-1">Order #ORD-8700</h4>
+                    <p className="text-stone-500 text-xs mb-3">Kanjeevaram Bridal Blouse</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] text-stone-400 uppercase">Master: Tailor Ali</span>
+                      <button className="text-xs text-emerald-500 hover:text-emerald-400">Move to QC &rarr;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Column 3 */}
+              <div className="bg-stone-900/40 rounded-xl p-4 border border-stone-800">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-serif text-emerald-500 uppercase tracking-widest text-sm">Ready for QC</h3>
+                  <span className="bg-emerald-500/20 text-emerald-500 px-2 py-0.5 rounded text-xs">0</span>
+                </div>
+                <div className="flex flex-col items-center justify-center h-40 text-stone-600 border-2 border-dashed border-stone-800 rounded">
+                  <CheckCircle size={24} className="mb-2 opacity-50" />
+                  <span className="text-xs uppercase tracking-widest">No items pending QC</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* ======================================================== */}
