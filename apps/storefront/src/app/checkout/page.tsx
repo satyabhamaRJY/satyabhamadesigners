@@ -18,6 +18,7 @@ export default function CheckoutPage() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState<'shipping' | 'payment' | 'success'>('shipping');
   const [orderNumber, setOrderNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card'>('upi');
@@ -120,7 +121,7 @@ export default function CheckoutPage() {
 
       const rzp = new Razorpay(options);
       rzp.on('payment.failed', function (response: any) {
-        alert(`Payment failed: ${response.error.description}`);
+        setError(`Payment failed: ${response.error.description}`);
       });
       rzp.open();
       setLoading(false);
@@ -203,9 +204,15 @@ export default function CheckoutPage() {
       <Navbar />
       
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-32 pb-24">
-        <h1 className="text-3xl md:text-4xl font-serif text-white mb-12 border-b border-stone-800 pb-4">
+        <h1 className="text-3xl md:text-4xl font-serif text-white mb-8 border-b border-stone-800 pb-4">
           Secure Checkout
         </h1>
+        
+        {error && (
+          <div className="mb-8 p-4 bg-red-900/20 border border-red-900/50 rounded-lg text-red-400 text-sm flex items-center justify-center">
+            {error}
+          </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-12">
           

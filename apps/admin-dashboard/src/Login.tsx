@@ -9,6 +9,7 @@ export default function Login({ onLogin }: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   
   // State for Reset Password Flow
   const [mode, setMode] = useState<'login' | 'reset-email' | 'reset-otp' | 'reset-email-sent' | 'reset-new'>('login');
@@ -18,6 +19,7 @@ export default function Login({ onLogin }: LoginProps) {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     // Mock Authentication Logic
     if (email === 'owner@satyabhama.com' && password === 'admin123') {
@@ -31,6 +33,8 @@ export default function Login({ onLogin }: LoginProps) {
 
   const handleResetRequest = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
     if (resetEmail === 'owner@satyabhama.com') {
       // Owner requires SMS OTP Authentication
       setMode('reset-otp');
@@ -44,6 +48,8 @@ export default function Login({ onLogin }: LoginProps) {
 
   const handleVerifyOTP = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
     if (otp === '123456') { // Mock OTP
       setMode('reset-new');
     } else {
@@ -53,7 +59,7 @@ export default function Login({ onLogin }: LoginProps) {
 
   const handleNewPassword = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Password successfully reset! You can now log in.");
+    setSuccess('Password successfully reset! You can now log in.');
     setMode('login');
   };
 
@@ -75,6 +81,12 @@ export default function Login({ onLogin }: LoginProps) {
           {error && (
             <div className="mb-6 p-3 bg-red-900/30 border border-red-900/50 rounded text-red-400 text-xs text-center">
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-6 p-3 bg-emerald-900/30 border border-emerald-900/50 rounded text-emerald-400 text-xs text-center">
+              {success}
             </div>
           )}
 

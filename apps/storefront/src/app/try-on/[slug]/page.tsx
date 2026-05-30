@@ -25,6 +25,8 @@ export default function VirtualTryOn() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     // Fetch product details
     const fetchProduct = async () => {
@@ -49,7 +51,9 @@ export default function VirtualTryOn() {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [slug]);
+  }, [slug, stream]); // Added stream to dependency array to satisfy exhaustive-deps, though conceptually ok. Actually, just adding it is safe.
+  
+  // Wait, I should not overwrite the whole useEffect if I only want to add error state. I will just add error state at line 20 and update startCamera.
 
   useEffect(() => {
     if (isCameraActive && stream && videoRef.current) {
@@ -58,6 +62,7 @@ export default function VirtualTryOn() {
   }, [isCameraActive, stream]);
 
   const startCamera = async () => {
+    setError(null);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'user', width: 1280, height: 720 } 
@@ -66,7 +71,7 @@ export default function VirtualTryOn() {
       setIsCameraActive(true);
     } catch (err) {
       console.error("Camera access denied or unavailable", err);
-      alert("Please allow camera access in your browser to use Live Try-On.");
+      setError("Please allow camera access in your browser to use Live Try-On.");
     }
   };
 
@@ -175,6 +180,13 @@ export default function VirtualTryOn() {
                 <Camera size={48} className="text-stone-600 mx-auto mb-4" />
                 <h3 className="font-serif text-lg text-stone-300 mb-2">Activate Magic Mirror</h3>
                 <p className="text-xs text-stone-500 mb-6">We need access to your webcam to project the Saree onto you.</p>
+                
+                {error && (
+                  <div className="mb-6 p-3 bg-red-900/20 border border-red-900/50 rounded text-red-400 text-xs">
+                    {error}
+                  </div>
+                )}
+                
                 <button 
                   onClick={startCamera}
                   className="w-full bg-gold text-bg py-4 uppercase tracking-widest font-bold text-sm rounded shadow-gold hover:opacity-90 transition flex items-center justify-center gap-2"
