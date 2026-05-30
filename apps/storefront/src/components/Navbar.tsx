@@ -22,9 +22,21 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 text-xl md:text-2xl font-serif tracking-widest text-gold italic font-semibold">
-            <div className="relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center overflow-visible">
-              <img src="/logo.png" alt="Satyabhama Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
+          <Link href="/" className="flex items-center gap-3 text-xl md:text-2xl font-serif tracking-widest text-gold italic font-semibold group">
+            <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center overflow-visible transition-transform duration-500 group-hover:scale-105">
+              <div 
+                className="w-full h-full bg-gradient-to-tr from-amber-200 via-gold to-yellow-600 drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]"
+                style={{
+                  WebkitMaskImage: 'url(/logo.png)',
+                  WebkitMaskSize: 'contain',
+                  WebkitMaskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskImage: 'url(/logo.png)',
+                  maskSize: 'contain',
+                  maskRepeat: 'no-repeat',
+                  maskPosition: 'center'
+                }}
+              />
             </div>
             SATYABHAMA
           </Link>
