@@ -19,20 +19,17 @@ export default function ReturnPolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-serif text-stone-200 mb-4 uppercase tracking-widest">Returns & Exchanges</h2>
-            <ul className="list-disc pl-5 space-y-3 text-stone-400">
-              <li>We accept returns or exchanges within <strong className="text-stone-200">7 days</strong> of delivery, provided the item is unworn, unwashed, and retains all original tags and packaging.</li>
-              <li>To initiate a return, please contact our concierge team at <strong className="text-stone-200">concierge@satyabhama.com</strong> with your order number.</li>
-              <li>Customized, made-to-measure, and altered garments are strictly <strong className="text-stone-200">non-returnable</strong> and <strong className="text-stone-200">non-refundable</strong>.</li>
-              <li>Items purchased during promotional sales or using discount codes are eligible for exchange only, not refunds.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-serif text-stone-200 mb-4 uppercase tracking-widest">Refund Process</h2>
-            <p>
-              Once your returned item is received and inspected by our quality team, we will notify you of the approval or rejection of your refund. Approved refunds will be processed within 5-7 business days to the original method of payment. Shipping costs are non-refundable and will be deducted from your total refund amount.
+            <h2 className="text-xl font-serif text-stone-200 mb-4 uppercase tracking-widest">Strict No Return & Exchange Policy</h2>
+            <p className="mb-4">
+              To maintain the highest standards of hygiene and preserve the pristine sanctity of our handcrafted heritage weaves, 
+              <strong className="text-stone-200"> all sarees, garments, and items sold by Satyabhama Designers are strictly non-returnable and non-exchangeable once they have been delivered.</strong>
             </p>
+            <ul className="list-disc pl-5 space-y-3 text-stone-400">
+              <li>Every piece you receive is untouched and exclusively yours. We do not restock or resell returned garments under any circumstances.</li>
+              <li>We highly encourage our patrons to thoroughly review product descriptions, detailed photographs, and measurements before placing an order.</li>
+              <li>Customized, made-to-measure, and altered garments are also entirely final sale.</li>
+              <li>In the rare event that a product is delivered with a verified manufacturing defect or damage in transit, please contact our concierge team at <strong className="text-stone-200">concierge@satyabhama.com</strong> within 24 hours of delivery with unboxing videos and photographic evidence for a resolution.</li>
+            </ul>
           </section>
         </div>
       </div>
